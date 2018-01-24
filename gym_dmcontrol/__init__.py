@@ -43,6 +43,12 @@ class DMControlEnv(gym.Env):
         return obs[FLAT_OBSERVATION_KEY]
 
     def _render(self, mode='human', close=False):
+        if close:
+            if self._viewer is not None:
+                self._viewer.close()
+                self._viewer = None
+            return
+
         pixels = self._dmenv.physics.render(width=320, height=240)
         if mode == 'rgb_array':
             return pixels
