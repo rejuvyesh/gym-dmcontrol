@@ -6,12 +6,18 @@ from gym import spaces
 from gym.envs.registration import register
 import numpy as np
 
+from gym_dmcontrol.viewer import Viewer
+
 
 class DMControlEnv(gym.Env):
+    """
+    Wrapper for dm_control suite task environments
+    """
     metadata = {'render.modes': ['human', 'rgb_array']}
 
     def __init__(self, domain, task, task_kwargs=None, visualize_reward=False):
         self._dmenv = suite.load(domain, task, task_kwargs, visualize_reward)
+        self._viewer = None
 
     @property
     def observation_space(self):
@@ -37,9 +43,21 @@ class DMControlEnv(gym.Env):
         return obs[FLAT_OBSERVATION_KEY]
 
     def _render(self, mode='human', close=False):
-        pixels = self._dmenv.physics.render()
+        pixels = self._dmenv.physics.render(width=320, height=240)
         if mode == 'rgb_array':
             return pixels
+        elif mode == 'human':
+            self.viewer.update(pixels)
+        else:
+            raise NotImplementedError(mode)
+
+    @property
+    def viewer(self):
+        if self._viewer is None:
+            self._viewer = Viewer(width=320, height=240)
+
+        return self._viewer
+
 
 for domain_name, task_name in suite.BENCHMARKING:
     register(id='DMBench{}{}-v0'.format(domain_name.capitalize(), task_name.capitalize()),
