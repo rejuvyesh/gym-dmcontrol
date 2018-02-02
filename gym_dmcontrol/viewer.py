@@ -12,8 +12,8 @@ class Viewer:
         self.window.clear()
         self.window.switch_to()
         self.window.dispatch_events()
-        pyglet.image.ImageData(self.width, self.height, 'RGB',
-                               pixels.tobytes(), pitch=self.width * -3).blit(0, 0)
+        pyglet.image.ImageData(self._width, self._height, 'RGB',
+                               pixels.tobytes(), pitch=self._width * -3).blit(0, 0)
         self.window.flip()
 
     def close(self):
