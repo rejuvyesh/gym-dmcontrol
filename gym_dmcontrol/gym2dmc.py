@@ -72,7 +72,7 @@ class Gym2DMControl(environment.Base):
             self._reset_next_step = True
             return environment.TimeStep(environment.StepType.LAST, reward, 0.0, observation)
 
-        return environment.TimeStep(environment.StepType.LAST, reward, 1.0, observation)
+        return environment.TimeStep(environment.StepType.MID, reward, 1.0, observation)
 
     def action_spec(self):
         return self._action_spec
