@@ -3,7 +3,7 @@ from setuptools import find_packages
 
 setup(
     name='gym_dmcontrol',
-    version='0.0.2',
+    version='0.0.3',
     author='rejuvyesh',
     description=('Simple wrapper for DeepMind control suite'),
     license="Apache License, Version 2.0",
