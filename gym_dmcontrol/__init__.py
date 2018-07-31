@@ -30,19 +30,22 @@ class DMControlEnv(gym.Env):
         aspec = self._dmenv.action_spec()
         return spaces.Box(aspec.minimum, aspec.maximum)
 
-    def _step(self, action):
+    def seed(self, seed=None):
+        self._dmenv.task._random = np.random.RandomState(seed)
+
+    def step(self, action):
         ts = self._dmenv.step(action)
         obs = flatten_observation(ts.observation)[FLAT_OBSERVATION_KEY]
         reward = ts.reward
         done = ts.step_type.last()
         return obs, reward, done, {}
 
-    def _reset(self):
+    def reset(self):
         ts = self._dmenv.reset()
         obs = flatten_observation(ts.observation)
         return obs[FLAT_OBSERVATION_KEY]
 
-    def _render(self, mode='human', close=False):
+    def render(self, mode='human', close=False):
         if close:
             if self._viewer is not None:
                 self._viewer.close()
